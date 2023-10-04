@@ -58,7 +58,7 @@ class CKitsForm {
     $config = $this->chestkits->getConfig();
 
     $economyManager->getMoney($player, function (Player $player, $balance) use ($form, $config) {
-        $formContent = str_replace("{%balance}", $balance, $config->get("form.content", "Choose kit you want to buy:\nYour Balance: $balance"));
+        $formContent = str_replace("{%balance}", (string)$balance, $config->get("form.content", "Choose kit you want to buy:\nYour Balance: {%balance}"));
         $form->setTitle($config->get("form.title", "Chestkits Form"));
         $form->setContent($formContent);
     });
