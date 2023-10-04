@@ -40,34 +40,34 @@ class CKitsForm {
      * @return void
      */
     private function openForm(Player $player): void {
-        $form = new SimpleForm(function (Player $player, $data) {
-            if (!isset($data)) {
-                return false;
-            }
-            $this->PurchaseForm(
-                $player,
-                $data
-            );
-        });
-        if (empty($this->chestkits->kits->getAll())) {
-            $player->sendMessage($this->chestkits->getMessage("no.kits"));
-            return;
+    $form = new SimpleForm(function (Player $player, $data) {
+        if (!isset($data)) {
+            return false;
         }
-        $economyManager = new EconomyManager($this->chestkits);
-        
-        $config = $this->chestkits->getConfig();
-
-        $economyManager->getMoney($player, function (Player $player, $playerBalance) use ($form, $config) {
-            $form->setTitle($config->get("form.title", "Chestkits Form"));
-            $form->setContent("Choose kit you want to buy:\nYour Balance: $playerBalance");
-        });
-
-        foreach ($this->chestkits->kits->getAll() as $key) {
-            $form->addButton($key["name"] . "\n" . $key["price"]);
-        }
-
-        $player->sendForm($form);
+        $this->PurchaseForm(
+            $player,
+            $data
+        );
+    });
+    if (empty($this->chestkits->kits->getAll())) {
+        $player->sendMessage($this->chestkits->getMessage("no.kits"));
+        return;
     }
+    $economyManager = new EconomyManager($this->chestkits);
+
+    $economyManager->getMoney($player, function (Player $player, $playerBalance) use ($form) {
+        $config = $this->chestkits->getConfig();
+        $form->setTitle($config->get("form.title", "Chestkits Form"));
+        $content = str_replace("{player_balance}", $playerBalance, $config->get("form.content", "Choose kit you want to buy:\nYour Balance: {player_balance}"));
+        $form->setContent($content);
+    });
+
+    foreach ($this->chestkits->kits->getAll() as $key) {
+        $form->addButton($key["name"] . "\n" . $key["price"]);
+    }
+
+    $player->sendForm($form);
+}
 
     private function PurchaseForm(Player $player, int $key): void
     {
