@@ -24,3 +24,13 @@ With easy-to-understand configuration.
 
 - If you found bugs or want to give suggestions, please visit <a href="https://github.com/David-pm-pl/ChestKits/issues">here</a> or join our Discord server.
 - We accept all contributions! If you want to contribute, please make a pull request in <a href="https://github.com/David-pm-pl/ChestKits/pulls">here</a>.
+
+# Terpz710
+
+- [x] Changed command from /chestkits to /kit(Its up to my server standards!)
+- [x] Make it so the items goes directly into the inventory rather than dropping onto the ground.(Not a great idea for reasons...)
+- [ ] Make free kits rather than having a price counter display 0
+- [ ] Add a cooldown to kits so you can buy unlimted amount of kits.
+- [ ] Add your money balance to the UI.
+
+Now I will not be releasing this version to poggit for obvious reasons. So if you want to keep updated than hit the star to save this respository.
