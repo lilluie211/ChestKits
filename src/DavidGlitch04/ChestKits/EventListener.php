@@ -36,19 +36,17 @@ class EventListener implements Listener{
     public function onTap(BlockPlaceEvent $event): void{
         $item = $event->getItem();
         $player = $event->getPlayer();
-        $world = $player->getWorld();
-        $position = $event->getBlockAgainst()->getPosition();
         if($this->chestkits->isChestKit($item)){
             $kitname = $item->getNamedTag()->getString("chestkits");
             foreach ($this->chestkits->kits->getAll() as $kits){
                 if($kits["name"] == $kitname){
                     foreach($kits["items"] as $itemString){
-                        $world->dropItem($position, $this->loadItem(...explode(":", $itemString)));
+                        $player->getInventory()->addItem($this->loadItem(...explode(":", $itemString)));
                     }
-                    isset($kits["helmet"]) and $world->dropItem($position, $this->loadItem(...explode(":", $kits["helmet"])));
-                    isset($kits["chestplate"]) and $world->dropItem($position, $this->loadItem(...explode(":", $kits["chestplate"])));
-                    isset($kits["leggings"]) and $world->dropItem($position, $this->loadItem(...explode(":", $kits["leggings"])));
-                    isset($kits["boots"]) and $world->dropItem($position, $this->loadItem(...explode(":", $kits["boots"])));
+                    isset($kits["helmet"]) and $player->getInventory()->addItem($this->loadItem(...explode(":", $kits["helmet"])));
+                    isset($kits["chestplate"]) and $player->getInventory()->addItem($this->loadItem(...explode(":", $kits["chestplate"])));
+                    isset($kits["leggings"]) and $player->getInventory()->addItem($this->loadItem(...explode(":", $kits["leggings"])));
+                    isset($kits["boots"]) and $player->getInventory()->addItem($this->loadItem(...explode(":", $kits["boots"])));
                 }
             }
             $item->setCount($item->getCount() - 1);
@@ -75,7 +73,7 @@ class EventListener implements Listener{
         }
         $enchantment = null;
         foreach($enchantments as $key => $name_level){
-            if($key % 2 === 0){ //Name expected
+            if($key % 2 === 0){
                 $enchantment = StringToEnchantmentParser::getInstance()->parse((string)$name_level);
                 if($enchantment === null && class_exists(CustomEnchantManager::class)){
                     $enchantment = CustomEnchantManager::getEnchantmentByName((string)$name_level);
