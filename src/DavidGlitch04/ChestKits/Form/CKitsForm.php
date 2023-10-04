@@ -54,8 +54,10 @@ class CKitsForm {
         return;
     }
     $economyManager = new EconomyManager($this->chestkits);
-    
-    $economyManager->getMoney($player, function (Player $player, $playerBalance) use ($form) {
+
+    $config = $this->chestkits->getConfig();
+
+    $economyManager->getMoney($player, function (Player $player, $playerBalance) use ($form, $config) {
         $form->setTitle($config->get("form.title", "Chestkits Form"));
         $form->setContent($config->get("form.content", "Choose kit you want to buy:\nYour Balance: $playerBalance"));
     });
