@@ -6,6 +6,6 @@ projects:
   ChestKits:
     path: ""
 libs:
-      - src: Vecnavium/FormsUI/FormsUI
-        version: ^1.1.3
+- src: Vecnavium/FormsUI/FormsUI
+   version: ^1.1.3
 ...
