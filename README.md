@@ -30,7 +30,7 @@ With easy-to-understand configuration.
 - [x] Changed command from /chestkits to /kit(Its up to my server standards!)
 - [x] Make it so the items goes directly into the inventory rather than dropping onto the ground.(Not a great idea for reasons...)
 - [ ] Make free kits rather than having a price counter display 0
-- [ ] Add a cooldown to kits so you can buy unlimted amount of kits.
+- [ ] Add a cooldown to kits so you cant buy unlimted amount of kits.
 - [ ] Add your money balance to the UI.
 
 Now I will not be releasing this version to poggit for obvious reasons. So if you want to keep updated than hit the star to save this respository.
