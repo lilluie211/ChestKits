@@ -32,8 +32,8 @@ class CKitsCommand extends Command implements PluginOwned{
      */
     public function __construct(ChestKits $chestkits) {
         $this->chestkits = $chestkits;
-        parent::__construct("chestkits");
-        $this->setDescription("Chestkits command");
+        parent::__construct("kit");
+        $this->setDescription("Skyblock Kits");
         $this->setPermission("chestkits.command.allow");
     }
 
