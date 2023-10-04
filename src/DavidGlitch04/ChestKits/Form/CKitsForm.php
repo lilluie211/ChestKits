@@ -54,11 +54,12 @@ class CKitsForm {
         return;
     }
     $economyManager = new EconomyManager($this->chestkits);
-    $playerBalance = $economyManager->getMoney($player);
-
-    $form->setTitle($config->get("form.title", "Chestkits Form"));
-    $form->setContent($config->get("form.content", "Choose kit you want to buy:\nYour Balance: $playerBalance"));
     
+    $economyManager->getMoney($player, function (Player $player, $playerBalance) use ($form) {
+        $form->setTitle($config->get("form.title", "Chestkits Form"));
+        $form->setContent($config->get("form.content", "Choose kit you want to buy:\nYour Balance: $playerBalance"));
+    });
+
     foreach ($this->chestkits->kits->getAll() as $key) {
         $form->addButton($key["name"] . "\n" . $key["price"]);
     }
