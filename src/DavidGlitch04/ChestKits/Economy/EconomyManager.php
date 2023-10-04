@@ -41,39 +41,54 @@ class EconomyManager{
         case "EconomyAPI":
             $money = $this->eco->myMoney($player->getName());
             assert(is_float($money));
+            $this->plugin->getConfig()->set("player_balance", $money);
+            $this->plugin->saveConfig();
             $callback($player, $money);
             break;
         case "BedrockEconomy":
             $this->eco->getAPI()->getPlayerBalance($player->getName(), ClosureContext::create(static function (?int $balance) use ($player, $callback) : void {
-                $callback($player, $balance ?? 0);
+                $balance = $balance ?? 0;
+                $callback($player, $balance);
+                $this->plugin->getConfig()->set("player_balance", $balance);
+                $this->plugin->saveConfig();
             }));
             break;
         default:
             $this->eco->getAPI()->getPlayerBalance($player->getName(), ClosureContext::create(static function (?int $balance) use ($player, $callback) : void {
-                $callback($player, $balance ?? 0);
+                $balance = $balance ?? 0;
+                $callback($player, $balance);
+                $this->plugin->getConfig()->set("player_balance", $balance);
+                $this->plugin->saveConfig();
             }));
-        }
     }
+}
 
-    /**
-     * @param Player $player
-     * @param int $amount
-     * @return bool
-     */
-    public function reduceMoney(Player $player, int $amount, Closure $callback){
-        if($this->eco == null){
-            $this->plugin->getLogger()->warning("You not have Economy plugin");
-            return true;
-        }
-        switch ($this->eco->getName()){
-            case "EconomyAPI":
-                $callback($this->eco->reduceMoney($player->getName(), $amount) === EconomyAPI::RET_SUCCESS);
-                break;
-            case "BedrockEconomy":
-                $this->eco->getAPI()->subtractFromPlayerBalance($player->getName(), (int) ceil($amount), ClosureContext::create(static function(bool $success) use($callback) : void{
+public function reduceMoney(Player $player, int $amount, Closure $callback) {
+    if ($this->eco == null) {
+        $this->plugin->getLogger()->warning("You don't have an Economy plugin");
+        return true;
+    }
+    switch ($this->eco->getName()) {
+        case "EconomyAPI":
+            $success = $this->eco->reduceMoney($player->getName(), $amount) === EconomyAPI::RET_SUCCESS;
+            if ($success) {
+                $this->plugin->getConfig()->set("player_balance", $this->eco->myMoney($player->getName()));
+                $this->plugin->saveConfig();
+            }
+            $callback($success);
+            break;
+        case "BedrockEconomy":
+            $this->eco->getAPI()->subtractFromPlayerBalance($player->getName(), (int)ceil($amount), ClosureContext::create(static function (bool $success) use ($callback) : void {
+                if ($success) {
                     $callback($success);
-                }));
-                break;
+                } else {
+                    $callback($success);
+                }
+                $balance = $this->eco->getAPI()->getPlayerBalance($player->getName());
+                $this->plugin->getConfig()->set("player_balance", $balance);
+                $this->plugin->saveConfig();
+            }));
+            break;
         }
     }
 }
