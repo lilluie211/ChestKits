@@ -1,0 +1,11 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/Terpz710/ChestKits
+build-by-default: true
+branches:
+- pm5
+projects:
+  ChestKits:
+    path: ""
+libs:
+      - src: Vecnavium/FormsUI/FormsUI
+        version: ^1.1.3
+...
