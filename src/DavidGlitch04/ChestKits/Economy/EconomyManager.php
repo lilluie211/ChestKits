@@ -37,21 +37,21 @@ class EconomyManager{
      * @return int
      */
     public function getMoney(Player $player, Closure $callback): void {
-        switch ($this->eco->getName()){
-            case "EconomyAPI":
-                $money = $this->eco->myMoney($player->getName());
-		        assert(is_float($money));
-		        $callback($money);
-                break;
-            case "BedrockEconomy":
-                $this->eco->getAPI()->getPlayerBalance($player->getName(), ClosureContext::create(static function(?int $balance) use($callback) : void{
-                    $callback($balance ?? 0);
-                }));
-                break;
-            default:
-                $this->eco->getAPI()->getPlayerBalance($player->getName(), ClosureContext::create(static function(?int $balance) use($callback) : void{
-                    $callback($balance ?? 0);
-                }));
+    switch ($this->eco->getName()) {
+        case "EconomyAPI":
+            $money = $this->eco->myMoney($player->getName());
+            assert(is_float($money));
+            $callback($player, $money);
+            break;
+        case "BedrockEconomy":
+            $this->eco->getAPI()->getPlayerBalance($player->getName(), ClosureContext::create(static function (?int $balance) use ($player, $callback) : void {
+                $callback($player, $balance ?? 0);
+            }));
+            break;
+        default:
+            $this->eco->getAPI()->getPlayerBalance($player->getName(), ClosureContext::create(static function (?int $balance) use ($player, $callback) : void {
+                $callback($player, $balance ?? 0);
+            }));
         }
     }
 
