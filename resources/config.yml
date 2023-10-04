@@ -6,7 +6,7 @@ language: eng
 prefix: "&c[&aChestkits&c] "
 # Some information for Form
 form.title: "Chestkits Form"
-form.content: "Choose kit you want to buy:"
+form.content: "Choose a kit you choose to buy:\nYour Balance: {player_balance}"
 purchase.title: "Purchase Form"
 purchase.accept: "Accept"
 purchase.decline: "Decline"
