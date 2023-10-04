@@ -44,31 +44,32 @@ class CKitsForm {
         if (!isset($data)) {
             return false;
         }
-        $this->PurchaseForm(
-            $player,
-            $data
-        );
+        $this->PurchaseForm($player, $data);
     });
     if (empty($this->chestkits->kits->getAll())) {
         $player->sendMessage($this->chestkits->getMessage("no.kits"));
         return;
     }
-    $economyManager = new EconomyManager($this->chestkits);
-
-    $config = $this->chestkits->getConfig();
-
-    $economyManager->getMoney($player, function (Player $player, $balance) use ($form, $config) {
-        $formContent = str_replace("{%balance}", (string)$balance, $config->get("form.content", "Choose kit you want to buy:\nYour Balance: {%balance}"));
-        $form->setTitle($config->get("form.title", "Chestkits Form"));
-        $form->setContent($formContent);
-    });
-
     foreach ($this->chestkits->kits->getAll() as $key) {
         $form->addButton($key["name"] . "\n" . $key["price"]);
     }
-
+    $config = $this->chestkits->getConfig();
+    $form->setTitle($config->get("form.title", "Chestkits Form"));
+    $content = $config->get("form.content", "Choose kit you want to buy:");
+    $balance = $this->getBalanceForPlayer($player);
+    $content = str_replace('{%balance}', number_format($balance, 2), $content);
+    $form->setContent($content);
     $player->sendForm($form);
 }
+
+    private function getBalanceForPlayer(Player $player): float {
+    $ecoManager = new EconomyManager($this->chestkits);
+    $balance = 0.0;
+    $ecoManager->getMoney($player, function ($playerBalance) use (&$balance) {
+        $balance = $playerBalance;
+        });
+    return $balance;
+    }
 
     private function PurchaseForm(Player $player, int $key): void
     {
@@ -96,7 +97,7 @@ class CKitsForm {
                         }
                     });
                 case 1:
-                    //NOOP
+                    //NOTHING
                     break;
             }
         });
