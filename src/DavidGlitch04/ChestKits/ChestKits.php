@@ -48,7 +48,7 @@ class ChestKits extends PluginBase{
     {
         $server = $this->getServer();
         $server->getPluginManager()->registerEvents(new EventListener($this), $this);
-        $server->getCommandMap()->register("chestkits", new CKitsCommand($this));
+        $server->getCommandMap()->register("kit", new CKitsCommand($this));
         $this->saveResource("kits.yml");
         $this->kits = new Config($this->getDataFolder()."kits.yml", Config::YAML);
         $this->piggyEnchants = $this->getServer()->getPluginManager()->getPlugin("PiggyCustomEnchants");
