@@ -59,7 +59,7 @@ class EconomyManager{
                     $callback($player, $balance);
                     $this->plugin->getConfig()->set("balance", $balance);
                     $this->plugin->saveConfig();
-                });
+                })
         }
     }
 
