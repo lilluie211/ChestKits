@@ -6,6 +6,6 @@ main: DavidGlitch04\ChestKits\ChestKits
 website: https://github.com/taylordevs
 permissions:
   chestkits.command.allow:
-    default: op
+    default: true
     description: Allow player to use chestkits
 ...
